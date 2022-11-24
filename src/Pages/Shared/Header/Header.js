@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
+import toast from 'react-hot-toast';
 import logo from '../../../Assets/logo/logo.png'
-
-const menuItems = <>
-    <li><Link to="/">Home</Link></li>
-    <li><Link to="/blog">Blogs</Link></li>
-    <li><Link to="/login">LogIn</Link></li>
-    <li><Link to="/signup">SignUp</Link></li>
-</>
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 const Header = () => {
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {
+                toast.success('Successfully Log Out');
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const menuItems = <>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/blog">Blogs</Link></li>
+
+        {
+            user?.uid ?
+                <li>
+                    <button onClick={handleLogOut} className="btn btn-outline btn-error">Log Out</button>
+                </li>
+                :
+                <>
+                    <li><Link to="/login">LogIn</Link></li>
+                    <li><Link to="/signup">SignUp</Link></li>
+                </>
+
+        }
+
+    </>
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
