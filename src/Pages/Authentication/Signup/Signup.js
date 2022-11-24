@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 const Signup = () => {
@@ -10,7 +11,8 @@ const Signup = () => {
     const imageBBHostKey = process.env.REACT_APP_Imgbb_Key;
 
     const handleSignUp = (data) => {
-        const { email, password } = data;
+        const { email, password, name, role } = data;
+        console.log(data)
         const image = data.image[0];
         const formData = new FormData();
         formData.append('image', image);
@@ -30,9 +32,8 @@ const Signup = () => {
                     createUser(email, password)
                         .then(() => {
                             updateUserInformation(userInfo)
-                                .then(result => {
-                                    const user = result.user;
-                                    console.log(user)
+                                .then(() => {
+                                    saveUser(name, email, imgData.data.url, role)
                                 })
                                 .catch(error => {
                                     console.log(error);
@@ -42,6 +43,23 @@ const Signup = () => {
                             console.log(error);
                         })
                 }
+            })
+    }
+
+
+    const saveUser = (name, email, image, role) => {
+        const user = { name, email, image, role };
+        fetch('http://localhost:5000/addUser', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                toast.success('Successfully Sign Up');
             })
     }
 
@@ -71,6 +89,23 @@ const Signup = () => {
                         })} className="input input-bordered w-full max-w-xs" />
                         {errors.file && <p className='text-red-500'>{errors.file.message}</p>}
                     </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label"> <span className="label-text">Are you </span></label>
+                        <select defaultValue='Choose One' {...register("role", {
+                            required: 'role is Required'
+                        })}
+                            className="select select-bordered w-full max-w-xs">
+
+                            <option>Buyer</option>
+                            <option>Seller</option>
+                        </select>
+
+
+                        {errors.file && <p className='text-red-500'>{errors.file.message}</p>}
+                    </div>
+
+
+
                     <div className="form-control w-full max-w-xs">
                         <label className="label"> <span className="label-text">Password</span></label>
                         <input type="password" {...register("password", {

@@ -20,20 +20,21 @@ const Header = () => {
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/blog">Blogs</Link></li>
+        <li><Link to="/sellerDashboard">DashBoard</Link></li>
+    </>
 
+    const userItems = <>
         {
             user?.uid ?
                 <li>
-                    <button onClick={handleLogOut} className="btn btn-outline btn-error">Log Out</button>
+                    <li onClick={handleLogOut}>Log Out</li>
                 </li>
                 :
                 <>
                     <li><Link to="/login">LogIn</Link></li>
                     <li><Link to="/signup">SignUp</Link></li>
                 </>
-
         }
-
     </>
     return (
         <div className="navbar bg-base-100">
@@ -56,8 +57,20 @@ const Header = () => {
                     {menuItems}
                 </ul>
             </div>
-            <div className="navbar-end">
-                <Link className="btn">Get started</Link>
+            <div className="navbar-end  md:mr-1 lg:mr-6 p-3">
+                <div className="dropdown">
+                    <label tabIndex={1}>
+                        <div className="avatar online">
+                            <div className="w-14 rounded-full cursor-pointer">
+                                <img src={user?.photoURL} alt="" />
+                            </div>
+                        </div>
+                    </label>
+                    <ul tabIndex={1} className="menu menu-compact dropdown-content mt-4 -ml-24 p-2 shadow bg-base-100 rounded-box w-52">
+                        {userItems}
+                    </ul>
+                </div>
+
             </div>
         </div>
     );
