@@ -7,6 +7,7 @@ import Login from '../../Pages/Authentication/Login/Login';
 import Signup from '../../Pages/Authentication/Signup/Signup';
 import Blog from '../../Pages/Blog/Blog';
 import Home from '../../Pages/Home/Home/Home';
+import Phones from '../../Pages/Home/ProductCatagory/Phones';
 
 const Routes = createBrowserRouter([
     {
@@ -28,6 +29,11 @@ const Routes = createBrowserRouter([
             {
                 path: '/signup',
                 element: <Signup></Signup>
+            },
+            {
+                path: '/productcatagory/:brandName',
+                element: <Phones></Phones>,
+                loader: ({ params }) => fetch(`http://localhost:5000/productcatagory/${params.brandName}`)
             }
         ]
     },
