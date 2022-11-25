@@ -35,6 +35,8 @@ const AddProduct = () => {
                         resalePrice: data.resalePrice,
                         usedYear: data.yearOfUse,
                         userEmail: user?.email,
+                        userName: user?.displayName,
+                        userImage: user?.photoURL,
                         postTime: time,
                         image: imgData.data.url,
                         sellerMessage: data.message

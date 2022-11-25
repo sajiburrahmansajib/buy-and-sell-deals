@@ -1,11 +1,16 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import PhoneDetails from './PhoneDetails';
 
 const Phones = () => {
     const data = useLoaderData();
     return (
-        <div>
-            <h1>Total data : {data.length}</h1>
+        <div className='mb-7 mt-7'>
+            {
+                data.map(d => <PhoneDetails
+                    phone={d}
+                ></PhoneDetails>)
+            }
 
         </div>
     );
