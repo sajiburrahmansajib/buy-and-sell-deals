@@ -20,7 +20,8 @@ const Header = () => {
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/blog">Blogs</Link></li>
-        <li><Link to="/sellerDashboard">DashBoard</Link></li>
+        <li><Link to="/sellerDashboard">Seller DashBoard</Link></li>
+        <li><Link to="/adminDashboard">Admin DashBoard</Link></li>
     </>
 
     const userItems = <>
