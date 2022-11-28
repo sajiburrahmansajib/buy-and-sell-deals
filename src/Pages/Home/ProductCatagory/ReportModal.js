@@ -10,14 +10,18 @@ const ReportModal = ({ reportUser, reportProduct }) => {
 
     const handleReport = (event) => {
         event.preventDefault();
+
+        const d = new Date();
+        let time = d.toLocaleString();
         const form = event.target;
         const message = form.message.value;
 
         const report = {
             // productName: productName,
             reportMessage: message,
+            reportTime: time,
             reportedUser: user?.email,
-            user: reportUser.email,
+            seller: reportUser.email,
             productName: reportProduct.productName
         }
 
