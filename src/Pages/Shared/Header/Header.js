@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import logo from '../../../Assets/logo/logo.png'
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import useAdmin from '../../../hooks/useAdmin';
+import useSeller from '../../../hooks/useSeller';
 
 const Header = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [isAdmin] = useAdmin(user?.email);
+    const [isSeller] = useSeller(user?.email);
+
 
     const handleLogOut = () => {
         logOut()
@@ -20,9 +25,19 @@ const Header = () => {
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/blog">Blogs</Link></li>
-        <li><Link to="/sellerDashboard">Seller DashBoard</Link></li>
-        <li><Link to="/adminDashboard">Admin DashBoard</Link></li>
-        <li><Link to="/buyerDashboard">Buyer DashBoard</Link></li>
+        {
+            isAdmin &&
+            <li><Link to="/adminDashboard">Admin DashBoard</Link></li>
+        }
+        {
+            isSeller &&
+            <li><Link to="/sellerDashboard">Seller DashBoard</Link></li>
+        }
+        {
+            !isAdmin && !isSeller &&
+            <li><Link to="/buyerDashboard">Buyer DashBoard</Link></li>
+        }
+
     </>
 
     const userItems = <>

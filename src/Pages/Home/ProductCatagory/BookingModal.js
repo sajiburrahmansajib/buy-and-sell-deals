@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
-const BookingModal = ({ phoneSelect }) => {
+const BookingModal = ({ phoneSelect, refetch }) => {
     // console.log('phonemodal', phoneSelect);
     const { user } = useContext(AuthContext);
     const { _id, brandName, productName, userEmail } = phoneSelect;
+
 
     const handleBooked = (event) => {
         event.preventDefault();
@@ -41,7 +42,22 @@ const BookingModal = ({ phoneSelect }) => {
             .then(data => {
                 console.log(data);
                 if (data.acknowledged) {
-                    toast.success('Booking confirmed');
+                    fetch(`http://localhost:5000/user/booking/${_id}`, {
+                        method: 'PUT',
+                        // headers: {
+                        //     authorization: `bearer ${localStorage.getItem('accessToken')}`
+                        // }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.modifiedCount > 0) {
+                                toast.success('Booking confirmed');
+                                refetch();
+                                form.reset();
+
+                            }
+                        })
+
                 }
                 else {
                     toast.error(data.message);
