@@ -5,12 +5,22 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 const SellerProduct = () => {
     const { user } = useContext(AuthContext);
 
-    const { data: productData = [], refetch, isLoading } = useQuery({
+
+    const { data: productData = [] } = useQuery({
         queryKey: [user],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/sellerDashboard/products?email=${user?.email}`);
-            const data = await res.json();
-            return data
+            try {
+                const res = await fetch(`http://localhost:5000/sellerDashboard/products?email=${user?.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            }
+            catch (error) {
+
+            }
         }
     });
 

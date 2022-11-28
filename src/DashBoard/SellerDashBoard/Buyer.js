@@ -5,16 +5,32 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 const Buyer = () => {
     const { user } = useContext(AuthContext);
 
+    // const { data: buyerData = [] } = useQuery({
+    //     queryKey: [user],
+    //     queryFn: async () => {
+    //         const res = await fetch(`http://localhost:5000/sellerDashboard/buyer?email=${user?.email}`);
+    //         const data = await res.json();
+    //         return data
+    //     }
+    // });
+
     const { data: buyerData = [] } = useQuery({
         queryKey: [user],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/sellerDashboard/buyer?email=${user?.email}`);
-            const data = await res.json();
-            return data
+            try {
+                const res = await fetch(`http://localhost:5000/sellerDashboard/buyer?email=${user?.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            }
+            catch (error) {
+
+            }
         }
     });
-
-    console.log(buyerData)
 
 
     return (
@@ -34,7 +50,7 @@ const Buyer = () => {
                         <tbody>
                             {
 
-                                buyerData.map((product, i) => <tr>
+                                buyerData.map((product, i) => <tr key={product._id}>
                                     <th>{i + 1}</th>
                                     <td>{product.buyerName}</td>
                                     <td>{product.buyerEmail}</td>

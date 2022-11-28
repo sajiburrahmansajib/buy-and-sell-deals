@@ -4,13 +4,25 @@ import React from 'react';
 const ReportedSeller = () => {
 
     const { data: reports = [] } = useQuery({
-        queryKey: [''],
+        queryKey: [],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/admin/reports');
-            const data = await res.json();
-            return data
+            try {
+                const res = await fetch('http://localhost:5000/admin/reports', {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            }
+            catch (error) {
+
+            }
         }
     });
+
+
+
     return (
         <div>
 

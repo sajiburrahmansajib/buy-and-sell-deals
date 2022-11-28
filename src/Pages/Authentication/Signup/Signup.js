@@ -1,14 +1,23 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import useToken from '../../../hooks/useToken';
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [signUpError, setSignUPError] = useState('');
     const { createUser, updateUserInformation } = useContext(AuthContext);
     const imageBBHostKey = process.env.REACT_APP_Imgbb_Key;
+
+    const [createdUserEmail, setCreatedUserEmail] = useState('')
+    const [token] = useToken(createdUserEmail);
+    const navigate = useNavigate();
+
+    if (token) {
+        navigate('/');
+    }
 
     const handleSignUp = (data) => {
         const { email, password, name, role } = data;
@@ -41,6 +50,7 @@ const Signup = () => {
                         })
                         .catch(error => {
                             console.log(error);
+                            setSignUPError(error.message)
                         })
                 }
             })
@@ -52,13 +62,15 @@ const Signup = () => {
         fetch('http://localhost:5000/addUser', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify(user)
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+                setCreatedUserEmail(email)
                 toast.success('Successfully Sign Up');
             })
     }

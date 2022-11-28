@@ -6,12 +6,23 @@ import { FaTrash } from 'react-icons/fa';
 const AllProducts = () => {
 
 
+
+
     const { data: products = [], refetch } = useQuery({
-        queryKey: [''],
+        queryKey: [],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/products');
-            const data = await res.json();
-            return data
+            try {
+                const res = await fetch('http://localhost:5000/products', {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            }
+            catch (error) {
+
+            }
         }
     });
 
@@ -19,7 +30,10 @@ const AllProducts = () => {
         const accept = window.confirm('Are you sure , You want to delete this Product');
         if (accept) {
             fetch(`http://localhost:5000/product/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                }
             })
                 .then(res => res.json())
                 .then(data => {

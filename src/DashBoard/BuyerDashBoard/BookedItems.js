@@ -5,14 +5,33 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 const BookedItems = () => {
     const { user } = useContext(AuthContext);
 
+    // const { data: items = [] } = useQuery({
+    //     queryKey: [user],
+    //     queryFn: async () => {
+    //         const res = await fetch(`http://localhost:5000/buyerDashboard/bookedItems?email=${user?.email}`);
+    //         const data = await res.json();
+    //         return data
+    //     }
+    // });
+
     const { data: items = [] } = useQuery({
-        queryKey: [user],
+        queryKey: [],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/buyerDashboard/bookedItems?email=${user?.email}`);
-            const data = await res.json();
-            return data
+            try {
+                const res = await fetch(`http://localhost:5000/buyerDashboard/bookedItems?email=${user?.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            }
+            catch (error) {
+
+            }
         }
     });
+
 
 
     return (

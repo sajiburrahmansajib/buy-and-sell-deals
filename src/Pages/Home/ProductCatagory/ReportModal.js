@@ -1,4 +1,3 @@
-import { fromJSON } from 'postcss';
 import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
@@ -28,7 +27,8 @@ const ReportModal = ({ reportUser, reportProduct }) => {
         fetch('http://localhost:5000/reports', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify(report)
         })

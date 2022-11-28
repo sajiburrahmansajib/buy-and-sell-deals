@@ -5,12 +5,31 @@ import toast from 'react-hot-toast';
 import { FcApproval } from "react-icons/fc";
 
 const AllUsers = () => {
+    // const { data: allUser = [], refetch } = useQuery({
+    //     queryKey: [''],
+    //     queryFn: async () => {
+    //         const res = await fetch('http://localhost:5000/allUsers');
+    //         const data = await res.json();
+    //         return data
+    //     }
+    // });
+
+
     const { data: allUser = [], refetch } = useQuery({
-        queryKey: [''],
+        queryKey: [],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/allUsers');
-            const data = await res.json();
-            return data
+            try {
+                const res = await fetch('http://localhost:5000/allUsers', {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            }
+            catch (error) {
+
+            }
         }
     });
 
@@ -18,9 +37,9 @@ const AllUsers = () => {
     const handleMakeSeller = (id) => {
         fetch(`http://localhost:5000/users/seller/${id}`, {
             method: 'PUT',
-            // headers: {
-            //     authorization: `bearer ${localStorage.getItem('accessToken')}`
-            // }
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            }
         })
             .then(res => res.json())
             .then(data => {
@@ -34,9 +53,9 @@ const AllUsers = () => {
     const handleVerifyUser = (id) => {
         fetch(`http://localhost:5000/users/${id}`, {
             method: 'PUT',
-            // headers: {
-            //     authorization: `bearer ${localStorage.getItem('accessToken')}`
-            // }
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            }
         })
             .then(res => res.json())
             .then(data => {
