@@ -18,7 +18,7 @@ const AllProducts = () => {
     const handleDeleteProduct = (id) => {
         const accept = window.confirm('Are you sure , You want to delete this Product');
         if (accept) {
-            fetch(`http://localhost:5000/product${id}`, {
+            fetch(`http://localhost:5000/product/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -32,7 +32,6 @@ const AllProducts = () => {
         }
     }
 
-    console.log('all product', products)
     return (
         <div className="overflow-x-auto mt-7">
             <table className="table w-full">
@@ -77,7 +76,7 @@ const AllProducts = () => {
                             <td>{product.postTime}</td>
 
                             <td>
-                                <FaTrash onClick={() => handleDeleteProduct(product._id)} className='text-2xl text-red-600'></FaTrash>
+                                <FaTrash onClick={() => handleDeleteProduct(product._id)} className='text-2xl text-red-600 cursor-pointer'></FaTrash>
                             </td>
 
 

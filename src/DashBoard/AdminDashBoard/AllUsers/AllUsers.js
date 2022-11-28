@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FaTrash } from "react-icons/fa";
 import React from 'react';
 import toast from 'react-hot-toast';
+import { FcApproval } from "react-icons/fc";
 
 const AllUsers = () => {
     const { data: allUser = [], refetch } = useQuery({
@@ -28,6 +29,22 @@ const AllUsers = () => {
                     refetch();
                 }
             })
+    };
+
+    const handleVerifyUser = (id) => {
+        fetch(`http://localhost:5000/users/${id}`, {
+            method: 'PUT',
+            // headers: {
+            //     authorization: `bearer ${localStorage.getItem('accessToken')}`
+            // }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    toast.success('User Verification Successful.')
+                    refetch();
+                }
+            })
     }
 
 
@@ -45,6 +62,7 @@ const AllUsers = () => {
 
                         <th>Option</th>
                         <th>Make Seller</th>
+                        <th><FcApproval className='text-4xl'></FcApproval></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,7 +83,11 @@ const AllUsers = () => {
                                 <FaTrash className='text-2xl text-red-600'></FaTrash>
                             </td>
                             <td>{user?.role === 'Seller' ? user.role : <button onClick={() => handleMakeSeller(user._id)} className="btn btn-sm">Make Seller</button>}</td>
-
+                            <td>
+                                {
+                                    user?.verification ? <h1 className='text-xl text-success'>{user?.verification}</h1> : <button onClick={() => handleVerifyUser(user._id)} className='btn btn-xs btn-accent'>Verify User</button>
+                                }
+                            </td>
                         </tr>)
                     }
                 </tbody>
