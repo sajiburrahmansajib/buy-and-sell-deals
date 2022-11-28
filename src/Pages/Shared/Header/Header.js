@@ -22,6 +22,7 @@ const Header = () => {
         <li><Link to="/blog">Blogs</Link></li>
         <li><Link to="/sellerDashboard">Seller DashBoard</Link></li>
         <li><Link to="/adminDashboard">Admin DashBoard</Link></li>
+        <li><Link to="/buyerDashboard">Buyer DashBoard</Link></li>
     </>
 
     const userItems = <>

@@ -2,10 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import AllProducts from '../../DashBoard/AdminDashBoard/AllProducts/AllProducts';
 import AllUsers from '../../DashBoard/AdminDashBoard/AllUsers/AllUsers';
 import ReportedSeller from '../../DashBoard/AdminDashBoard/ReportedSeller/ReportedSeller';
+import BookedItems from '../../DashBoard/BuyerDashBoard/BookedItems';
 import AddProduct from '../../DashBoard/SellerDashBoard/AddProduct/AddProduct';
 import Buyer from '../../DashBoard/SellerDashBoard/Buyer';
 import SellerProduct from '../../DashBoard/SellerDashBoard/SellerProduct';
 import AdminDashBoard from '../../Layout/AdminDashBoard';
+import BuyerDashBoard from '../../Layout/BuyerDashBoard';
 import Main from '../../Layout/Main';
 import SellerDashBoard from '../../Layout/SellerDashBoard';
 import Login from '../../Pages/Authentication/Login/Login';
@@ -74,6 +76,16 @@ const Routes = createBrowserRouter([
             {
                 path: '/adminDashboard/reportedSeller',
                 element: <ReportedSeller></ReportedSeller>
+            }
+        ]
+    },
+    {
+        path: '/buyerDashboard',
+        element: <BuyerDashBoard></BuyerDashBoard>,
+        children: [
+            {
+                path: '/buyerDashboard/bookedItems',
+                element: <BookedItems></BookedItems>
             }
         ]
     }

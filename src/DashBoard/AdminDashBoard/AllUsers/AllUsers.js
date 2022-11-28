@@ -1,17 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { FaTrash } from "react-icons/fa";
 import React from 'react';
+import toast from 'react-hot-toast';
 
 const AllUsers = () => {
-    const { data: allUser = [] } = useQuery({
-        queryKey: ['appointmentOptions'],
+    const { data: allUser = [], refetch } = useQuery({
+        queryKey: [''],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/allUsers');
             const data = await res.json();
             return data
         }
     });
-    console.log('admin', allUser)
+
+
+    const handleMakeSeller = (id) => {
+        fetch(`http://localhost:5000/users/seller/${id}`, {
+            method: 'PUT',
+            // headers: {
+            //     authorization: `bearer ${localStorage.getItem('accessToken')}`
+            // }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    toast.success('Make Seller Successful.')
+                    refetch();
+                }
+            })
+    }
 
 
 
@@ -47,7 +64,7 @@ const AllUsers = () => {
                             <td>
                                 <FaTrash className='text-2xl text-red-600'></FaTrash>
                             </td>
-                            <td>{user?.role === 'Seller' ? user.role : <button className="btn btn-sm">Make Seller</button>}</td>
+                            <td>{user?.role === 'Seller' ? user.role : <button onClick={() => handleMakeSeller(user._id)} className="btn btn-sm">Make Seller</button>}</td>
 
                         </tr>)
                     }

@@ -20,7 +20,7 @@ const Buyer = () => {
     return (
         < div className="overflow-x-auto mt-16" >
             {
-                buyerData.length === 0 ? <h1 className='text-3xl font-bold text-center text-red-700'>You don't post any product</h1> :
+                buyerData.length === 0 ? <h1 className='text-3xl font-bold text-center text-red-700'>You don't have any Buyers</h1> :
 
                     <table className="table w-full ">
                         <thead>

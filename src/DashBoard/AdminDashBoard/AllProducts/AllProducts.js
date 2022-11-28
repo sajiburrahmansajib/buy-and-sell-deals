@@ -1,18 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { FaTrash } from 'react-icons/fa';
 
 const AllProducts = () => {
 
 
-    const { data: products = [] } = useQuery({
-        queryKey: ['appointmentOptions'],
+    const { data: products = [], refetch } = useQuery({
+        queryKey: [''],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/products');
             const data = await res.json();
             return data
         }
     });
+
+    const handleDeleteProduct = (id) => {
+        const accept = window.confirm('Are you sure , You want to delete this Product');
+        if (accept) {
+            fetch(`http://localhost:5000/product${id}`, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.deletedCount > 0) {
+                        toast.error("Successfully Delete")
+                        refetch();
+                    }
+                })
+        }
+    }
 
     console.log('all product', products)
     return (
@@ -59,7 +77,7 @@ const AllProducts = () => {
                             <td>{product.postTime}</td>
 
                             <td>
-                                <FaTrash className='text-2xl text-red-600'></FaTrash>
+                                <FaTrash onClick={() => handleDeleteProduct(product._id)} className='text-2xl text-red-600'></FaTrash>
                             </td>
 
 
