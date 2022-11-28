@@ -16,7 +16,7 @@ const Phones = () => {
     const { data: phones = [], refetch } = useQuery({
         queryKey: ['phoneSelected', url],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/productcatagory/${catagory}`);
+            const res = await fetch(`https://buy-and-sell-deals-server.vercel.app/productcatagory/${catagory}`);
             const data = await res.json();
             return data
         }

@@ -4,15 +4,18 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import useToken from '../../../hooks/useToken';
+import useTitle from '../../../hooks/useTitle';
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [loginError, setLoginError] = useState('');
-    const { login } = useContext(AuthContext);
+    useTitle('Login')
+    const { login, googleLogIn } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
     const [loginUserEmail, setLoginUserEmail] = useState('');
     const [token] = useToken(loginUserEmail);
+
 
     const from = location.state?.from?.pathname || '/';
 
@@ -32,7 +35,38 @@ const Login = () => {
                 setLoginError(error.message)
             })
 
+    };
+
+    const handleGoogleLogIn = () => {
+        googleLogIn()
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                saveUser(user.displayName, user.email, user.photoURL)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    };
+
+    const saveUser = (name, email, image) => {
+        const user = { name, email, image };
+        fetch('https://buy-and-sell-deals-server.vercel.app/addUser', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                toast.success('Successfully Log In');
+                setLoginUserEmail(email)
+            })
     }
+
     return (
         <div className='h-[800px] flex justify-center items-center'>
             <div className='w-96 p-7'>
@@ -65,7 +99,7 @@ const Login = () => {
                 </form>
                 <p>New to Sell & Buy Deals <Link className='text-secondary' to="/signup">Create new Account</Link></p>
                 <div className="divider">OR</div>
-                <button className='btn btn-outline w-full'>CONTINUE WITH GOOGLE</button>
+                <button onClick={handleGoogleLogIn} className='btn btn-outline w-full'>CONTINUE WITH GOOGLE</button>
             </div>
         </div>
     );

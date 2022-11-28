@@ -4,9 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import useToken from '../../../hooks/useToken';
+import useTitle from '../../../hooks/useTitle';
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    useTitle('SignUp');
     const [signUpError, setSignUPError] = useState('');
     const { createUser, updateUserInformation } = useContext(AuthContext);
     const imageBBHostKey = process.env.REACT_APP_Imgbb_Key;
@@ -59,7 +61,7 @@ const Signup = () => {
 
     const saveUser = (name, email, image, role) => {
         const user = { name, email, image, role };
-        fetch('http://localhost:5000/addUser', {
+        fetch('https://buy-and-sell-deals-server.vercel.app/addUser', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',

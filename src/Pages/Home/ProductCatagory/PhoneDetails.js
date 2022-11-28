@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { FcApproval } from "react-icons/fc";
+import useTitle from '../../../hooks/useTitle';
 
 const PhoneDetails = ({ phone, setPhoneSelected, handleReport }) => {
+    useTitle('Phones')
 
     const { data: users = [] } = useQuery({
         queryKey: [phone],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/user/${phone.userEmail}`);
+            const res = await fetch(`https://buy-and-sell-deals-server.vercel.app/user/${phone.userEmail}`);
             const data = await res.json();
             return data
         }

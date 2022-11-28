@@ -1,25 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { FaTrash } from "react-icons/fa";
-import React from 'react';
+import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
 import { FcApproval } from "react-icons/fc";
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import useTitle from '../../../hooks/useTitle';
+
 
 const AllUsers = () => {
-    // const { data: allUser = [], refetch } = useQuery({
-    //     queryKey: [''],
-    //     queryFn: async () => {
-    //         const res = await fetch('http://localhost:5000/allUsers');
-    //         const data = await res.json();
-    //         return data
-    //     }
-    // });
-
+    const { userDelete } = useContext(AuthContext);
+    useTitle('Users');
 
     const { data: allUser = [], refetch } = useQuery({
         queryKey: [],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/allUsers', {
+                const res = await fetch('https://buy-and-sell-deals-server.vercel.app/allUsers', {
                     headers: {
                         authorization: `bearer ${localStorage.getItem('accessToken')}`
                     }
@@ -35,7 +31,7 @@ const AllUsers = () => {
 
 
     const handleMakeSeller = (id) => {
-        fetch(`http://localhost:5000/users/seller/${id}`, {
+        fetch(`https://buy-and-sell-deals-server.vercel.app/users/seller/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -51,7 +47,7 @@ const AllUsers = () => {
     };
 
     const handleVerifyUser = (id) => {
-        fetch(`http://localhost:5000/users/${id}`, {
+        fetch(`https://buy-and-sell-deals-server.vercel.app/users/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -63,6 +59,17 @@ const AllUsers = () => {
                     toast.success('User Verification Successful.')
                     refetch();
                 }
+            })
+    };
+
+    const handleDeleteUser = (email) => {
+        userDelete(email)
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(error => {
+                console.log(error)
             })
     }
 
@@ -86,7 +93,7 @@ const AllUsers = () => {
                 </thead>
                 <tbody>
                     {
-                        allUser.map((user, i) => user.role !== 'Admin' && <tr>
+                        allUser.map((user, i) => user.role !== 'Admin' && <tr key={user._id}>
                             <th>{i + 1}</th>
                             <td>
                                 <div className="avatar">
@@ -99,7 +106,7 @@ const AllUsers = () => {
                             <td>{user.email}</td>
 
                             <td>
-                                <FaTrash className='text-2xl text-red-600'></FaTrash>
+                                <FaTrash onClick={() => handleDeleteUser(user.email)} className='text-2xl text-red-600 cursor-pointer'></FaTrash>
                             </td>
                             <td>{user?.role === 'Seller' ? user.role : <button onClick={() => handleMakeSeller(user._id)} className="btn btn-sm">Make Seller</button>}</td>
                             <td>

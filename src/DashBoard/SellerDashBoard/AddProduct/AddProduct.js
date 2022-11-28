@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import useTitle from '../../../hooks/useTitle';
 
 const AddProduct = () => {
     const { register, handleSubmit } = useForm();
     const { user } = useContext(AuthContext);
+    useTitle('Add Product')
 
     const imageBBHostKey = process.env.REACT_APP_Imgbb_Key;
 
@@ -48,7 +50,7 @@ const AddProduct = () => {
     }
 
     const saveProduct = (productData) => {
-        fetch('http://localhost:5000/sellerDashboard/addProduct', {
+        fetch('https://buy-and-sell-deals-server.vercel.app/sellerDashboard/addProduct', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',

@@ -34,7 +34,7 @@ const Header = () => {
             <li><Link to="/sellerDashboard">Seller DashBoard</Link></li>
         }
         {
-            !isAdmin && !isSeller &&
+            user?.uid && !isAdmin && !isSeller &&
             <li><Link to="/buyerDashboard">Buyer DashBoard</Link></li>
         }
 

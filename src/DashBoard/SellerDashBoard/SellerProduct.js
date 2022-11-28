@@ -1,16 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useTitle from '../../hooks/useTitle';
 
 const SellerProduct = () => {
     const { user } = useContext(AuthContext);
+    useTitle('My Products')
 
 
     const { data: productData = [] } = useQuery({
         queryKey: [user],
         queryFn: async () => {
             try {
-                const res = await fetch(`http://localhost:5000/sellerDashboard/products?email=${user?.email}`, {
+                const res = await fetch(`https://buy-and-sell-deals-server.vercel.app/sellerDashboard/products?email=${user?.email}`, {
                     headers: {
                         authorization: `bearer ${localStorage.getItem('accessToken')}`
                     }

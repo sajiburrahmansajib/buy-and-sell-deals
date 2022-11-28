@@ -1,24 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useTitle from '../../hooks/useTitle';
 
 const BookedItems = () => {
     const { user } = useContext(AuthContext);
 
-    // const { data: items = [] } = useQuery({
-    //     queryKey: [user],
-    //     queryFn: async () => {
-    //         const res = await fetch(`http://localhost:5000/buyerDashboard/bookedItems?email=${user?.email}`);
-    //         const data = await res.json();
-    //         return data
-    //     }
-    // });
-
+    useTitle('Booked Items')
     const { data: items = [] } = useQuery({
         queryKey: [],
         queryFn: async () => {
             try {
-                const res = await fetch(`http://localhost:5000/buyerDashboard/bookedItems?email=${user?.email}`, {
+                const res = await fetch(`https://buy-and-sell-deals-server.vercel.app/buyerDashboard/bookedItems?email=${user?.email}`, {
                     headers: {
                         authorization: `bearer ${localStorage.getItem('accessToken')}`
                     }

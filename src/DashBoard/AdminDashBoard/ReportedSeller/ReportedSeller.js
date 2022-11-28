@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import useTitle from '../../../hooks/useTitle';
 
 const ReportedSeller = () => {
+    useTitle('Reports')
 
     const { data: reports = [] } = useQuery({
         queryKey: [],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/admin/reports', {
+                const res = await fetch('https://buy-and-sell-deals-server.vercel.app/admin/reports', {
                     headers: {
                         authorization: `bearer ${localStorage.getItem('accessToken')}`
                     }

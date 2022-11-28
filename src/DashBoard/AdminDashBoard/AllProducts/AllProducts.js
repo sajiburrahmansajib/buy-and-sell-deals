@@ -2,17 +2,17 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { FaTrash } from 'react-icons/fa';
+import useTitle from '../../../hooks/useTitle';
 
 const AllProducts = () => {
-
-
+    useTitle('All Products');
 
 
     const { data: products = [], refetch } = useQuery({
         queryKey: [],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/products', {
+                const res = await fetch('https://buy-and-sell-deals-server.vercel.app/products', {
                     headers: {
                         authorization: `bearer ${localStorage.getItem('accessToken')}`
                     }
@@ -29,7 +29,7 @@ const AllProducts = () => {
     const handleDeleteProduct = (id) => {
         const accept = window.confirm('Are you sure , You want to delete this Product');
         if (accept) {
-            fetch(`http://localhost:5000/product/${id}`, {
+            fetch(`https://buy-and-sell-deals-server.vercel.app/product/${id}`, {
                 method: 'DELETE',
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`

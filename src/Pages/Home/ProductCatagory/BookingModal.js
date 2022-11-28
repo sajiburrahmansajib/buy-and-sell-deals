@@ -31,7 +31,7 @@ const BookingModal = ({ phoneSelect, refetch }) => {
             bookingTime: time
         }
 
-        fetch('http://localhost:5000/bookings', {
+        fetch('https://buy-and-sell-deals-server.vercel.app/bookings', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -43,7 +43,7 @@ const BookingModal = ({ phoneSelect, refetch }) => {
             .then(data => {
                 console.log(data);
                 if (data.acknowledged) {
-                    fetch(`http://localhost:5000/user/booking/${_id}`, {
+                    fetch(`https://buy-and-sell-deals-server.vercel.app/user/booking/${_id}`, {
                         method: 'PUT',
                         headers: {
                             authorization: `bearer ${localStorage.getItem('accessToken')}`

@@ -24,7 +24,7 @@ const ReportModal = ({ reportUser, reportProduct }) => {
             productName: reportProduct.productName
         }
 
-        fetch('http://localhost:5000/reports', {
+        fetch('https://buy-and-sell-deals-server.vercel.app/reports', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
