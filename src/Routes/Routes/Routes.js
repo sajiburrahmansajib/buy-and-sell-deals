@@ -15,6 +15,9 @@ import Signup from '../../Pages/Authentication/Signup/Signup';
 import Blog from '../../Pages/Blog/Blog';
 import Home from '../../Pages/Home/Home/Home';
 import Phones from '../../Pages/Home/ProductCatagory/Phones';
+import AdminRoute from '../AdminRoute/AdminRoute';
+import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import SellerRoute from '../SellerRoute/SellerRoute';
 
 const Routes = createBrowserRouter([
     {
@@ -45,37 +48,37 @@ const Routes = createBrowserRouter([
     },
     {
         path: '/sellerDashboard',
-        element: <SellerDashBoard></SellerDashBoard>,
+        element: <SellerRoute><SellerDashBoard></SellerDashBoard></SellerRoute>,
         children: [
             {
                 path: '/sellerDashboard/addProduct',
-                element: <AddProduct></AddProduct>
+                element: <SellerRoute><AddProduct></AddProduct></SellerRoute>
             },
             {
                 path: '/sellerDashboard/products',
-                element: <SellerProduct></SellerProduct>
+                element: <SellerRoute><SellerProduct></SellerProduct></SellerRoute>
             },
             {
                 path: '/sellerDashboard/MyBuyers',
-                element: <Buyer></Buyer>
+                element: <SellerRoute><Buyer></Buyer></SellerRoute>
             },
         ]
     },
     {
         path: '/adminDashboard',
-        element: <AdminDashBoard></AdminDashBoard>,
+        element: <AdminRoute><AdminDashBoard></AdminDashBoard></AdminRoute>,
         children: [
             {
                 path: '/adminDashboard/users',
-                element: <AllUsers></AllUsers>
+                element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
             },
             {
                 path: '/adminDashboard/products',
-                element: <AllProducts></AllProducts>
+                element: <AdminRoute><AllProducts></AllProducts></AdminRoute>
             },
             {
                 path: '/adminDashboard/reportedSeller',
-                element: <ReportedSeller></ReportedSeller>
+                element: <AdminRoute><ReportedSeller></ReportedSeller></AdminRoute>
             }
         ]
     },
@@ -85,7 +88,7 @@ const Routes = createBrowserRouter([
         children: [
             {
                 path: '/buyerDashboard/bookedItems',
-                element: <BookedItems></BookedItems>
+                element: <PrivateRoute><BookedItems></BookedItems></PrivateRoute>
             }
         ]
     }
